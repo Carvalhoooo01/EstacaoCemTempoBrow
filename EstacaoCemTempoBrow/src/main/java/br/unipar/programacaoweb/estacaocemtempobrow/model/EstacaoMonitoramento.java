@@ -42,4 +42,21 @@ public class EstacaoMonitoramento {
     private String condicaoClimatica;
     private String fonteDadosClimaticos;
 
+    @Getter
+    @Setter
+
+    @Entity
+    public static class Sensor
+    {
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
+        private double valor;
+
+        @ManyToOne
+        private EstacaoMonitoramento estacao;
+
+    }
 }

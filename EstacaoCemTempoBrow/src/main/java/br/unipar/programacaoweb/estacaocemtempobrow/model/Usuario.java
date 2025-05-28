@@ -25,4 +25,30 @@ public class Usuario implements Serializable, UserDetails {
     private String username;
 
     private String password;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private List<Role> roleList = new ArrayList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+
+        return this.roleList.stream().map(
+
+                role -> new SimpleGrantedAuthority
+                (
+
+                    role.getPermissao().toString()
+
+                )
+
+        ).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public String getPassword() {
+        return "";
+    }
+
 }
