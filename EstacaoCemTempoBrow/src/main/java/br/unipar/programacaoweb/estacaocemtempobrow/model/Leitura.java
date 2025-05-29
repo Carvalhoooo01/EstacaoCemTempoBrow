@@ -10,7 +10,7 @@ import java.util.Date;
 @Setter
 
 @Entity
-public class LeituraHistorico
+public class Leitura
 {
 
     @Id
@@ -24,7 +24,7 @@ public class LeituraHistorico
     private float valor_leitura;
 
     @ManyToOne
-    private EstacaoMonitoramento unidade;
+    private Estacao unidade;
 
     private Date data_leitura;
 

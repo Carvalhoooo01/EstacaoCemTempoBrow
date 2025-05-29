@@ -26,7 +26,7 @@ public class Usuario implements Serializable, UserDetails {
 
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roleList = new ArrayList<>();
 
     @Override
