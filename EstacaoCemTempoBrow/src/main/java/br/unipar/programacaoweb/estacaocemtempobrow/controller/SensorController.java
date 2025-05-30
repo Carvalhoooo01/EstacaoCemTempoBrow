@@ -43,29 +43,20 @@ public class SensorController
         }
 
         List<Sensor> sensores = estacao.getSensores();
-        List<Float> media_valores = new ArrayList<>();
+
+        float soma = 0;
+        int contador = 0;
 
         for(Sensor sensor : sensores)
         {
 
-            media_valores.add(sensor.getValor());
+            soma += sensor.getValor();
+
+            contador++;
 
         }
 
-        int n = media_valores.size();
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (media_valores.get(j) > media_valores.get(j + 1)) {
-                    Float temp = media_valores.get(j);
-                    media_valores.set(j, media_valores.get(j + 1));
-                    media_valores.set(j + 1, temp);
-                }
-            }
-        }
-
-        int list_meio = Math.round(media_valores.size() / 2);
-
-        float media = media_valores.get(list_meio);
+        float media = soma / contador;
 
         return ResponseEntity.status(HttpStatus.OK).body(media);
 

@@ -47,7 +47,7 @@ public class SecurityConfig
                                 authorizeRequests ->
                                         authorizeRequests
                                                 .requestMatchers("auth/login").permitAll()
-                                                .anyRequest().denyAll()
+                                                .anyRequest().permitAll()
 
                         )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

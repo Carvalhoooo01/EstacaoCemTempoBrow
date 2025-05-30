@@ -12,7 +12,7 @@ public class EstacaoCemTempoBrowApplication {
     {
 
         SpringApplication.run(EstacaoCemTempoBrowApplication.class, args);
-        System.out.println("Acesse: http://localhost:8080\nSwagger UI: /swagger-ui.html ");
+        System.out.println("Acesse: http://localhost:8080\nSwagger UI: http://localhost:8080/swagger-ui.html ");
 
     }
 

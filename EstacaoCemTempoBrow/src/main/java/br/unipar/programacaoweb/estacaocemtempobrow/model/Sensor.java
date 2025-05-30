@@ -1,5 +1,6 @@
 package br.unipar.programacaoweb.estacaocemtempobrow.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,9 @@ public class Sensor
     private float valor;
 
     @ManyToOne
-    Estacao estacao;
+    @JoinColumn(name = "estacao_id")
+    @JsonBackReference
+    private Estacao estacao;
 
     @OneToMany
     List<Leitura> historicoList;

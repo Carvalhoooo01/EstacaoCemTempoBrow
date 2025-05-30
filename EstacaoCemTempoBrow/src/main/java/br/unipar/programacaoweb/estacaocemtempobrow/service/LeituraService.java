@@ -56,4 +56,21 @@ public class LeituraService
 
     }
 
+    public void salvar_inexitentes(List<Leitura> leituras)
+    {
+
+        for(Leitura leitura : leituras)
+        {
+
+            if(!existe_igual(leitura))
+            {
+
+                leituraRepository.save(leitura);
+
+            }
+
+        }
+
+    }
+
 }

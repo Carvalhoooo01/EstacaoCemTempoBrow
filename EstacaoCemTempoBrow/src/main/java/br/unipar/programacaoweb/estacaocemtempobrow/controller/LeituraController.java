@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -143,31 +144,22 @@ public class LeituraController
 
         List<Float> media_valores = new ArrayList<>();
 
+        float soma = 0;
+
         for(Leitura leitura : leituras)
         {
 
             media_valores.add(leitura.getValor_leitura());
 
-        }
+            soma += leitura.getValor_leitura();
 
-        int n = media_valores.size();
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (media_valores.get(j) > media_valores.get(j + 1)) {
-                    Float temp = media_valores.get(j);
-                    media_valores.set(j, media_valores.get(j + 1));
-                    media_valores.set(j + 1, temp);
-                }
-            }
         }
-
-        int list_meio = Math.round(media_valores.size() / 2);
 
         List<Float> media = new ArrayList<>();
 
-        media.add(media_valores.getFirst());
-        media.add(media_valores.get(list_meio));
-        media.add(media_valores.getLast());
+        media.add(Collections.min(media_valores));
+        media.add(soma / media_valores.size());
+        media.add(Collections.max(media_valores));
 
         return ResponseEntity.status(HttpStatus.OK).body(media);
 
