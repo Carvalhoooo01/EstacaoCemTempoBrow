@@ -22,7 +22,7 @@ public class TokenService {
     Algorithm algorithm = Algorithm.HMAC256(secret_key);
 
     return com.auth0.jwt.JWT.create()
-            .withSubject(UserDetails.getUsername())
+            .withSubject(user.getUsername())
             .withExpiresAt(new Date(System.currentTimeMillis()+ expiration_time))
             .sign(algorithm);
 

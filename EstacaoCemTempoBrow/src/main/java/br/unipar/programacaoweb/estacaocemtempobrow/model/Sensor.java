@@ -25,7 +25,7 @@ public class Sensor
 
     private String tipo;
 
-    private double valor;
+    private float valor;
 
     @ManyToOne
     Estacao estacao;

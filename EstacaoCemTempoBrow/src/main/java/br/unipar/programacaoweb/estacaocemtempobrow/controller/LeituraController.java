@@ -89,11 +89,11 @@ public class LeituraController
 
     }
 
-    @GetMapping("/media")
+    @GetMapping("/media_leituras")
     public ResponseEntity<List<Float>> media_valores(String nome_estacao, String tipo_sensor, Date data_inicio, Date data_fim)
     {
 
-        Estacao estacao = estacaoService.buscar_por_nome(nome_estacao);
+        /*Estacao estacao = estacaoService.buscar_por_nome(nome_estacao);
 
         if((data_inicio == null || data_fim == null) || (data_inicio.after(data_fim)) || (tipo_sensor == null || tipo_sensor.isEmpty()) || (nome_estacao == null || nome_estacao.isEmpty()))
         {
@@ -137,6 +137,17 @@ public class LeituraController
 
             }
 
+        }*/
+
+        List<Leitura> leituras = filtrar_leituras(nome_estacao, tipo_sensor, data_inicio, data_fim).getBody();
+
+        List<Float> media_valores = new ArrayList<>();
+
+        for(Leitura leitura : leituras)
+        {
+
+            media_valores.add(leitura.getValor_leitura());
+
         }
 
         int n = media_valores.size();
@@ -154,9 +165,9 @@ public class LeituraController
 
         List<Float> media = new ArrayList<>();
 
-        media.add(media_valores.get(0));
+        media.add(media_valores.getFirst());
         media.add(media_valores.get(list_meio));
-        media.add(media_valores.get(media_valores.size() - 1));
+        media.add(media_valores.getLast());
 
         return ResponseEntity.status(HttpStatus.OK).body(media);
 
