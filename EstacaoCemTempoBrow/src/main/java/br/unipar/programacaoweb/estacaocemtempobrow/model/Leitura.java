@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -27,14 +28,16 @@ public class Leitura
     private float valor_leitura;
 
     @ManyToOne
-    private Estacao unidade;
+    @JoinColumn(name = "estacao_id")
+    private Estacao estacao;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Sensor unidade;
 
     private Date data_leitura;
 
     private String mensagem;
 
     private boolean info_externa;
-
-
 
 }

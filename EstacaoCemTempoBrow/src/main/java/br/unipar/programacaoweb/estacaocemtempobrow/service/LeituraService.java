@@ -5,10 +5,13 @@ import br.unipar.programacaoweb.estacaocemtempobrow.model.Leitura;
 import br.unipar.programacaoweb.estacaocemtempobrow.model.Sensor;
 import br.unipar.programacaoweb.estacaocemtempobrow.repository.LeituraRepository;
 import br.unipar.programacaoweb.estacaocemtempobrow.repository.SensorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -18,6 +21,15 @@ public class LeituraService
     private LeituraRepository leituraRepository;
     private SensorRepository sensorRepository;
     private SensorService sensorService;
+
+    public LeituraService(LeituraRepository leituraRepository, SensorRepository sensorRepository, SensorService sensorService)
+    {
+
+        this.leituraRepository = leituraRepository;
+        this.sensorRepository = sensorRepository;
+        this.sensorService = sensorService;
+
+    }
 
     public Leitura salvar(Leitura leitura)
     {
@@ -95,7 +107,22 @@ public class LeituraService
 
         Leitura leitura = new Leitura();
 
+        leitura.setStatus_sensor(sensor.getStatus());
+        leitura.setTipo_sensor(sensor.getTipo());
+        leitura.setUnidade(sensor);
+        leitura.setValor_leitura(sensor.getValor());
+        leitura.setData_leitura(new Date());
+        leitura.setEstacao(sensor.getEstacao());
+        leitura.setMensagem("Gerada automaticamente");
+        leitura.setInfo_externa(sensor.getEstacao().isInfo_externa());
 
+        Leitura leitura_salva = leituraRepository.save(leitura);
+
+        sensor.getHistoricoList().add(leitura_salva);
+
+        sensorRepository.save(sensor);
+
+        return leitura_salva;
 
     }
 

@@ -1,20 +1,29 @@
 package br.unipar.programacaoweb.estacaocemtempobrow.configuration;
 
+import br.unipar.programacaoweb.estacaocemtempobrow.model.Leitura;
+import br.unipar.programacaoweb.estacaocemtempobrow.service.LeituraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableScheduling
 public class SchedulerConfig
 {
 
-    @Scheduled(fixedRate = 5000)//Em milisegundos
-    public void exemplo()
+    @Autowired
+    LeituraService leituraService;
+
+    @Scheduled(fixedRate = 1, timeUnit = TimeUnit.MINUTES)//Em milisegundos
+    public void gerar_leitura_auto()
     {
 
-        //codigo que schwdule vai executar
+        Leitura leitura = leituraService.gerar_leitura_auto();
+
+        System.out.println("Leitura gerada aleatoriamente:\n" + leitura);
 
     }
 

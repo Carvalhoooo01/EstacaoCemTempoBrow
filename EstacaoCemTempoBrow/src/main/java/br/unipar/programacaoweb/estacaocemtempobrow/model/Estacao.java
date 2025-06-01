@@ -32,11 +32,13 @@ public class Estacao {
     @Column(nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "estacao_id")
+    @OneToMany(mappedBy = "estacao", cascade = CascadeType.ALL)
     private List<Sensor> sensores;
 
     @Column(name = "data_instalacao", nullable = false)
     private LocalDate dataInstalacao = LocalDate.now();
+
+    private boolean info_externa;
 
     // Para integração com API de clima (ponto extra)
     /*

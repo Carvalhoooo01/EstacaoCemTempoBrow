@@ -28,6 +28,8 @@ public class Sensor
 
     private float valor;
 
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "estacao_id")
     Estacao estacao;

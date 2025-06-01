@@ -61,7 +61,8 @@ public class EstacaoController
                 for(Leitura leitura : sensor.getHistoricoList())
                 {
 
-                    leitura.setUnidade(estacaoSalvo);
+                    leitura.setEstacao(estacaoSalvo);
+                    leitura.setUnidade(sensor);
 
                 }
 
