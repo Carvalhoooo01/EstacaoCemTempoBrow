@@ -8,6 +8,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,17 +61,21 @@ public class SensorService
     public void salvar_inexitentes(List<Sensor> sensores)
     {
 
+        List<Sensor> inex_sensor = new ArrayList<>();
+
         for(Sensor sensor : sensores)
         {
 
             if(!existe_igual(sensor))
             {
 
-                sensorRepository.save(sensor);
+                inex_sensor.add(sensor);
 
             }
 
         }
+
+        sensorRepository.saveAll(inex_sensor);
 
     }
 

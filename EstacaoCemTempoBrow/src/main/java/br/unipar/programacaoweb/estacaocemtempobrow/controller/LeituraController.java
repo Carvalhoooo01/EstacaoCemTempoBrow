@@ -232,4 +232,12 @@ public class LeituraController
 
     }
 
+    @GetMapping("/listar")
+    public List<Leitura> listar_todos()
+    {
+
+        return leituraService.buscar_todos();
+
+    }
+
 }

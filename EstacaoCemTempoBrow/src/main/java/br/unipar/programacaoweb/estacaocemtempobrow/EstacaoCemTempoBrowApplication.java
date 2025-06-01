@@ -1,5 +1,6 @@
 package br.unipar.programacaoweb.estacaocemtempobrow;
 
+import br.unipar.programacaoweb.estacaocemtempobrow.service.RoleService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;

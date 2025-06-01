@@ -11,6 +11,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,17 +76,21 @@ public class LeituraService
     public void salvar_inexitentes(List<Leitura> leituras)
     {
 
+        List<Leitura> inex_leituras = new ArrayList<>();
+
         for(Leitura leitura : leituras)
         {
 
             if(!existe_igual(leitura))
             {
 
-                leituraRepository.save(leitura);
+                inex_leituras.add(leitura);
 
             }
 
         }
+
+        leituraRepository.saveAll(inex_leituras);
 
     }
 

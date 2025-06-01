@@ -15,4 +15,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>
     @Query("select u from Usuario u where lower(u.username) = lower(:username)")
     Optional<Usuario> findEntityByUsername(@Param("username") String username);
 
+    Usuario findByUsername(String username);
+
 }
