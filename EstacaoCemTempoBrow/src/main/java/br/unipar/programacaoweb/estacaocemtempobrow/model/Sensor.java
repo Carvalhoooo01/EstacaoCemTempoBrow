@@ -30,8 +30,7 @@ public class Sensor
 
     @ManyToOne
     @JoinColumn(name = "estacao_id")
-    @JsonBackReference
-    private Estacao estacao;
+    Estacao estacao;
 
     @OneToMany
     List<Leitura> historicoList;

@@ -1,6 +1,7 @@
 package br.unipar.programacaoweb.estacaocemtempobrow.controller;
 
 import br.unipar.programacaoweb.estacaocemtempobrow.model.Estacao;
+import br.unipar.programacaoweb.estacaocemtempobrow.model.Leitura;
 import br.unipar.programacaoweb.estacaocemtempobrow.model.Sensor;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.EstacaoService;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.LeituraService;
@@ -57,6 +58,13 @@ public class EstacaoController
             for(Sensor sensor : estacaoSalvo.getSensores())
             {
 
+                for(Leitura leitura : sensor.getHistoricoList())
+                {
+
+                    leitura.setUnidade(estacaoSalvo);
+
+                }
+
                 leituraService.salvar_inexitentes(sensor.getHistoricoList());
 
             }
@@ -72,6 +80,56 @@ public class EstacaoController
             return ResponseEntity.badRequest().body(null);
 
         }
+
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable Long id)
+    {
+
+        Estacao estacao = estacaoService.buscar_por_id(id);
+
+        if(estacao == null)
+        {
+
+            return ResponseEntity.notFound().build();
+
+        }
+
+        estacaoService.excluir(estacao);
+
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<Estacao> editar(@PathVariable Long id, @RequestBody Estacao estacao)
+    {
+
+        Estacao estacaoSalvo = estacaoService.buscar_por_id(id);
+
+        if(estacaoSalvo == null)
+        {
+
+            return ResponseEntity.notFound().build();
+
+        }
+
+        if(!estacao.equals(estacaoSalvo) && estacaoService.existe_igual(estacaoSalvo))
+        {
+
+            return ResponseEntity.badRequest().build();
+
+        }
+
+        estacaoSalvo.setNome(estacao.getNome());
+        estacaoSalvo.setSensores(estacao.getSensores());
+        estacaoSalvo.setStatus(estacao.getStatus());
+        estacaoSalvo.setLatitude(estacao.getLatitude());
+        estacaoSalvo.setLongitude(estacao.getLongitude());
+        estacaoSalvo.setDataInstalacao(estacao.getDataInstalacao());
+
+        return ResponseEntity.ok(estacaoService.salvar(estacaoSalvo));
 
     }
 

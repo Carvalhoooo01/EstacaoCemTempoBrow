@@ -2,7 +2,9 @@ package br.unipar.programacaoweb.estacaocemtempobrow.service;
 
 import br.unipar.programacaoweb.estacaocemtempobrow.model.Estacao;
 import br.unipar.programacaoweb.estacaocemtempobrow.model.Leitura;
+import br.unipar.programacaoweb.estacaocemtempobrow.model.Sensor;
 import br.unipar.programacaoweb.estacaocemtempobrow.repository.LeituraRepository;
+import br.unipar.programacaoweb.estacaocemtempobrow.repository.SensorRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class LeituraService
 {
 
     private LeituraRepository leituraRepository;
+    private SensorRepository sensorRepository;
+    private SensorService sensorService;
 
     public Leitura salvar(Leitura leitura)
     {
@@ -70,6 +74,28 @@ public class LeituraService
             }
 
         }
+
+    }
+
+    public Leitura gerar_leitura_auto()
+    {
+
+        Long total = sensorRepository.count();
+
+        if(total == 0)
+        {
+
+            return null;
+
+        }
+
+        Long id = Math.round(Math.random() * total);
+
+        Sensor sensor = sensorService.buscar_por_id(id);
+
+        Leitura leitura = new Leitura();
+
+
 
     }
 

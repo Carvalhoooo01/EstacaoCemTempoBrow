@@ -7,9 +7,7 @@ import br.unipar.programacaoweb.estacaocemtempobrow.service.EstacaoService;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.LeituraService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -162,6 +160,75 @@ public class LeituraController
         media.add(Collections.max(media_valores));
 
         return ResponseEntity.status(HttpStatus.OK).body(media);
+
+    }
+
+    @PostMapping("/salvar")
+    public ResponseEntity<Leitura> salvar(@RequestBody Leitura leitura)
+    {
+
+        Leitura leituraSalvo = leitura;
+
+        if(leituraSalvo == null)
+        {
+
+            return ResponseEntity.badRequest().build();
+
+        }
+
+        return ResponseEntity.ok(leituraService.salvar(leituraSalvo));
+
+    }
+
+    @DeleteMapping("/excluir/{id}")
+    public ResponseEntity<Void> excluir_por_id(@PathVariable Long id)
+    {
+
+        Leitura leitura_excluir = leituraService.buscar_por_id(id);
+
+        if(leitura_excluir == null)
+        {
+
+            return ResponseEntity.notFound().build();
+
+        }
+
+        leituraService.excluir(leitura_excluir);
+
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<Leitura> editar_por_id(@PathVariable Long id, @RequestBody Leitura leitura)
+    {
+
+        Leitura leitura_editar = leituraService.buscar_por_id(id);
+
+        if(leitura_editar == null)
+        {
+
+            return ResponseEntity.notFound().build();
+
+        }
+
+        if(!leitura_editar.equals(leitura) && leituraService.existe_igual(leitura))
+        {
+
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+
+        }
+
+        leitura_editar.setTipo_sensor(leitura.getTipo_sensor());
+        leitura_editar.setData_leitura(leitura.getData_leitura());
+        leitura_editar.setValor_leitura(leitura.getValor_leitura());
+        leitura_editar.setUnidade(leitura.getUnidade());
+        leitura_editar.setValor_leitura(leitura.getValor_leitura());
+        leitura_editar.setInfo_externa(leitura.isInfo_externa());
+        leitura_editar.setStatus_sensor(leitura.getStatus_sensor());
+        leitura_editar.setMensagem(leitura.getMensagem());
+
+        return ResponseEntity.ok(leituraService.salvar(leitura_editar));
 
     }
 

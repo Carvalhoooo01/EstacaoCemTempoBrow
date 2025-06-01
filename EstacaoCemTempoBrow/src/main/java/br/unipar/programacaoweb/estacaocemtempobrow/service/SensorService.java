@@ -74,11 +74,4 @@ public class SensorService
 
     }
 
-    public void mudar_estacao(Sensor sensor, Estacao estacao)
-    {
-
-        sensor.setEstacao(estacao);
-        
-    }
-
 }

@@ -1,7 +1,9 @@
 package br.unipar.programacaoweb.estacaocemtempobrow.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -9,6 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 
+@NoArgsConstructor
 @Entity
 public class Leitura
 {
@@ -31,5 +34,7 @@ public class Leitura
     private String mensagem;
 
     private boolean info_externa;
+
+
 
 }
