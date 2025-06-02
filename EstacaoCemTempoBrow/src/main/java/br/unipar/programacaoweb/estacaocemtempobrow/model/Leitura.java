@@ -27,10 +27,6 @@ public class Leitura
 
     private float valor_leitura;
 
-    @ManyToOne
-    @JoinColumn(name = "estacao_id")
-    private Estacao estacao;
-
     @ManyToOne(cascade = CascadeType.ALL)
     private Sensor unidade;
 

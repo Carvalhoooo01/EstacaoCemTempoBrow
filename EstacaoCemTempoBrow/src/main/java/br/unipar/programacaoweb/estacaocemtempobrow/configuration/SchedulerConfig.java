@@ -1,6 +1,8 @@
 package br.unipar.programacaoweb.estacaocemtempobrow.configuration;
 
 import br.unipar.programacaoweb.estacaocemtempobrow.model.Leitura;
+import br.unipar.programacaoweb.estacaocemtempobrow.model.Role;
+import br.unipar.programacaoweb.estacaocemtempobrow.model.Usuario;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.LeituraService;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.RoleService;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.UsuarioService;
@@ -9,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -41,11 +45,25 @@ public class SchedulerConfig
 
         roleService.salvar();
 
-        System.out.println(roleService.listar_todos());
+        List<Role> roleList = roleService.listar_todos();
+
+        for (Role role : roleList)
+        {
+
+            System.out.println(role.getPermissao().getDescricao());
+
+        }
 
         usuarioService.salvar();
 
-        System.out.println(usuarioService.listar_todos());
+        List<Usuario> usuarioList = usuarioService.listar_todos();
+
+        for(Usuario usuario : usuarioList)
+        {
+
+            System.out.println(usuario.getUsername() + " | " + usuario.getAuthorities());
+
+        }
 
     }
 

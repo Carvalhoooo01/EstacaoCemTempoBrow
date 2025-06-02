@@ -44,7 +44,7 @@ public class EstacaoController
         try
         {
 
-            Estacao estacaoSalvo = estacaoService.salvar(estacao);
+            Estacao estacaoSalvo = estacao;
 
             if(estacaoSalvo == null || estacaoSalvo.getSensores() == null)
             {
@@ -53,24 +53,23 @@ public class EstacaoController
 
             }
 
-            sensorService.salvar_inexitentes(estacaoSalvo.getSensores());
-
             for(Sensor sensor : estacaoSalvo.getSensores())
             {
 
                 for(Leitura leitura : sensor.getHistoricoList())
                 {
 
-                    leitura.setEstacao(estacaoSalvo);
                     leitura.setUnidade(sensor);
 
                 }
 
-                leituraService.salvar_inexitentes(sensor.getHistoricoList());
+                sensor.setHistoricoList(leituraService.salvar_inexitentes(sensor.getHistoricoList()));
 
             }
 
-            return ResponseEntity.ok(estacaoSalvo);
+            estacaoSalvo.setSensores(sensorService.salvar_inexitentes(estacaoSalvo.getSensores()));
+
+            return ResponseEntity.ok(estacaoService.salvar(estacaoSalvo));
 
         }
         catch(Exception e)

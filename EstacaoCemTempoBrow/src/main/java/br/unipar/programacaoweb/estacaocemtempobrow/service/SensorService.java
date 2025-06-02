@@ -4,17 +4,20 @@ import br.unipar.programacaoweb.estacaocemtempobrow.model.Estacao;
 import br.unipar.programacaoweb.estacaocemtempobrow.model.Leitura;
 import br.unipar.programacaoweb.estacaocemtempobrow.model.Sensor;
 import br.unipar.programacaoweb.estacaocemtempobrow.repository.SensorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SensorService
 {
 
+    @Autowired
     SensorRepository sensorRepository;
 
     public Sensor salvar(Sensor sensor)
@@ -41,7 +44,7 @@ public class SensorService
     public Sensor buscar_por_id(Long id)
     {
 
-        return sensorRepository.findById(id).get();
+        return sensorRepository.findSensorById(id);
 
     }
 
@@ -50,6 +53,7 @@ public class SensorService
 
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withIgnorePaths("id")
+                .withIgnoreNullValues()
                 .withStringMatcher(ExampleMatcher.StringMatcher.EXACT);
 
         Example<Sensor> example = Example.of(sensor, matcher);
@@ -58,24 +62,46 @@ public class SensorService
 
     }
 
-    public void salvar_inexitentes(List<Sensor> sensores)
+    public Sensor pegar_ou_criar(Sensor sensor)
     {
 
-        List<Sensor> inex_sensor = new ArrayList<>();
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withIgnorePaths("id")
+                .withIgnoreNullValues()
+                .withStringMatcher(ExampleMatcher.StringMatcher.EXACT);
+
+        Example<Sensor> example = Example.of(sensor, matcher);
+
+        Sensor existente = sensorRepository.findOne(example).orElse(null);
+
+        if(existente != null)
+        {
+
+            return existente;
+
+        }
+        else
+        {
+
+            return sensorRepository.save(sensor);
+
+        }
+
+    }
+
+    public List<Sensor> salvar_inexitentes(List<Sensor> sensores)
+    {
+
+        List<Sensor> new_sensor = new ArrayList<>();
 
         for(Sensor sensor : sensores)
         {
 
-            if(!existe_igual(sensor))
-            {
-
-                inex_sensor.add(sensor);
-
-            }
+            new_sensor.add(pegar_ou_criar(sensor));
 
         }
 
-        sensorRepository.saveAll(inex_sensor);
+        return new_sensor;
 
     }
 

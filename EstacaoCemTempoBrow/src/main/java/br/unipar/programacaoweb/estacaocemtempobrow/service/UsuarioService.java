@@ -46,6 +46,8 @@ public class UsuarioService
             if(usuarioRepository.findByUsername(username.get(i)) != null)
             {
 
+                System.out.println(username.get(i) + " = " + usuarioRepository.findByUsername(username.get(i)).getUsername());
+
                 return;
 
             }

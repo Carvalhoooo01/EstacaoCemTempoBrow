@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LeituraService
@@ -65,6 +66,7 @@ public class LeituraService
 
         ExampleMatcher matcher = ExampleMatcher.matchingAll()
                 .withIgnorePaths("id")
+                .withIgnoreNullValues()
                 .withStringMatcher(ExampleMatcher.StringMatcher.EXACT);
 
         Example<Leitura> example = Example.of(leitura, matcher);
@@ -73,24 +75,46 @@ public class LeituraService
 
     }
 
-    public void salvar_inexitentes(List<Leitura> leituras)
+    public Leitura pegar_ou_criar(Leitura leitura)
     {
 
-        List<Leitura> inex_leituras = new ArrayList<>();
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withIgnorePaths("id")
+                .withIgnoreNullValues()
+                .withStringMatcher(ExampleMatcher.StringMatcher.EXACT);
+
+        Example<Leitura> example = Example.of(leitura, matcher);
+
+        Leitura existente = leituraRepository.findOne(example).orElse(null);
+
+        if(existente != null)
+        {
+
+            return existente;
+
+        }
+        else
+        {
+
+            return leituraRepository.save(leitura);
+
+        }
+
+    }
+
+    public List<Leitura> salvar_inexitentes(List<Leitura> leituras)
+    {
+
+        List<Leitura> new_leituras = new ArrayList<>();
 
         for(Leitura leitura : leituras)
         {
 
-            if(!existe_igual(leitura))
-            {
-
-                inex_leituras.add(leitura);
-
-            }
+            new_leituras.add(pegar_ou_criar(leitura));
 
         }
 
-        leituraRepository.saveAll(inex_leituras);
+        return new_leituras;
 
     }
 
@@ -117,7 +141,6 @@ public class LeituraService
         leitura.setUnidade(sensor);
         leitura.setValor_leitura(sensor.getValor());
         leitura.setData_leitura(new Date());
-        leitura.setEstacao(sensor.getEstacao());
         leitura.setMensagem("Gerada automaticamente");
         leitura.setInfo_externa(sensor.getEstacao().isInfo_externa());
 
