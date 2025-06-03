@@ -59,6 +59,13 @@ public class SecurityFilter extends OncePerRequestFilter
         try
         {
 
+            String path = request.getRequestURI();
+
+            if (path.equals("/auth/login")) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             var token = this.getToken(request);
             var subject = tokenService.getSubjectByToken(token);
 
@@ -75,7 +82,9 @@ public class SecurityFilter extends OncePerRequestFilter
         catch (Exception e)
         {
 
-            System.out.println(e.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Não autorizado: " + e.getMessage());
+            return; // para execução e não continua a cadeia
 
         }
 

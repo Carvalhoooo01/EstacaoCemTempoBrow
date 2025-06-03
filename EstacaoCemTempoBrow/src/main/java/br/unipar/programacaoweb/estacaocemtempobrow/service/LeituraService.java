@@ -136,6 +136,13 @@ public class LeituraService
 
         Leitura leitura = new Leitura();
 
+        if(sensor == null || sensor.getEstacao() == null)
+        {
+
+            return null;
+
+        }
+
         leitura.setStatus_sensor(sensor.getStatus());
         leitura.setTipo_sensor(sensor.getTipo());
         leitura.setUnidade(sensor);

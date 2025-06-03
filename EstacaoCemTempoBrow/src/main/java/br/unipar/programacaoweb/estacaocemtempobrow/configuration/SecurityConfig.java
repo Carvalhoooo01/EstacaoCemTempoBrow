@@ -1,5 +1,6 @@
 package br.unipar.programacaoweb.estacaocemtempobrow.configuration;
 
+import br.unipar.programacaoweb.estacaocemtempobrow.model.enums.PermissaoEnum;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,8 +47,8 @@ public class SecurityConfig
 
                                 authorizeRequests ->
                                         authorizeRequests
-                                                .requestMatchers("auth/login").permitAll()
-                                                .requestMatchers("estacao/listar").hasRole("USER")//Exemplo
+                                                .requestMatchers("/auth/login").permitAll()
+                                                .requestMatchers("/estacao/listar").hasAnyAuthority("USER")//Exemplo
                                                 .anyRequest().hasAnyAuthority("ADMIN")
 
                         )
