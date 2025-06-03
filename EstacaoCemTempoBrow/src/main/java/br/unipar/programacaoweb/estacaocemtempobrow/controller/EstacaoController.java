@@ -6,6 +6,7 @@ import br.unipar.programacaoweb.estacaocemtempobrow.model.Sensor;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.EstacaoService;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.LeituraService;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.SensorService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class EstacaoController
 
     }
 
+    @Operation(summary = "Salva a estação informada")
     @PostMapping("/salvar")
     public ResponseEntity<Estacao> salvar(@RequestBody Estacao estacao)
     {
@@ -83,6 +85,7 @@ public class EstacaoController
 
     }
 
+    @Operation(summary = "Deleta a estação do id informado")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id)
     {
@@ -102,6 +105,7 @@ public class EstacaoController
 
     }
 
+    @Operation(summary = "Atualiza a estação do id informado")
     @PutMapping("/editar/{id}")
     public ResponseEntity<Estacao> editar(@PathVariable Long id, @RequestBody Estacao estacao)
     {

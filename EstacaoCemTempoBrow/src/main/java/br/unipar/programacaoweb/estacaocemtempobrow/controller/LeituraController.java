@@ -5,6 +5,7 @@ import br.unipar.programacaoweb.estacaocemtempobrow.model.Leitura;
 import br.unipar.programacaoweb.estacaocemtempobrow.model.Sensor;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.EstacaoService;
 import br.unipar.programacaoweb.estacaocemtempobrow.service.LeituraService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -163,6 +164,7 @@ public class LeituraController
 
     }
 
+    @Operation(summary = "Salva a leitura informada")
     @PostMapping("/salvar")
     public ResponseEntity<Leitura> salvar(@RequestBody Leitura leitura)
     {
@@ -180,6 +182,7 @@ public class LeituraController
 
     }
 
+    @Operation(summary = "Deleta a leitura pelo id informado")
     @DeleteMapping("/excluir/{id}")
     public ResponseEntity<Void> excluir_por_id(@PathVariable Long id)
     {
@@ -199,6 +202,7 @@ public class LeituraController
 
     }
 
+    @Operation(summary = "Edita o id pelo id informado")
     @PutMapping("/editar/{id}")
     public ResponseEntity<Leitura> editar_por_id(@PathVariable Long id, @RequestBody Leitura leitura)
     {
@@ -232,6 +236,7 @@ public class LeituraController
 
     }
 
+    @Operation(summary = "Informa todas as leituras salvas")
     @GetMapping("/listar")
     public List<Leitura> listar_todos()
     {

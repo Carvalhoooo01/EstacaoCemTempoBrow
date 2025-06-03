@@ -1,4 +1,6 @@
 package br.unipar.programacaoweb.estacaocemtempobrow.model;
+
+import br.unipar.programacaoweb.estacaocemtempobrow.model.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,37 +18,25 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class Usuario implements Serializable, UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String nome;
 
     private String username;
 
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Role> roleList = new ArrayList<>();
+    private List<Role> listRoles = new ArrayList<>();
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities()
-    {
-
-        return this.roleList.stream().map(
-
-                role -> new SimpleGrantedAuthority
-                (
-
-                    role.getPermissao().toString()
-
-                )
-
-        ).collect(Collectors.toList());
-
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.listRoles.stream().map(
+                        role -> new SimpleGrantedAuthority(
+                                role.getPermissao().toString()))
+                .collect(Collectors.toList());
     }
-
-    @Override
-    public String getPassword() {
-        return "";
-    }
-
 }

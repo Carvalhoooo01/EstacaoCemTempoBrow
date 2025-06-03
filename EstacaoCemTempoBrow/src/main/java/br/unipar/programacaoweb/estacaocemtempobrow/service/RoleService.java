@@ -20,7 +20,7 @@ public class RoleService
         this.roleRepository = roleRepository;
 
     }
-
+/*
     public void salvar()
     {
 
@@ -45,7 +45,7 @@ public class RoleService
 
         }
 
-    }
+    }*/
 
     public List<Role> listar_todos()
     {

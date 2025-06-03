@@ -69,4 +69,9 @@ public class EstacaoService
 
     }
 
+    public List<Estacao> checar_inatividade() {
+
+        return estacaoRepository.findByStatus("inatina".toUpperCase());
+
+    }
 }

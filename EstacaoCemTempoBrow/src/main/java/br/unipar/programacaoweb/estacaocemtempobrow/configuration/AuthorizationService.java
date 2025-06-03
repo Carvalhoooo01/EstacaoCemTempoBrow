@@ -42,7 +42,7 @@ public class AuthorizationService implements UserDetailsService
 
         return new LoginResponse(
                 user.getUsername(),
-                tokenService.gerarToken(user)
+                tokenService.generateToken(user)
         );
 
     }

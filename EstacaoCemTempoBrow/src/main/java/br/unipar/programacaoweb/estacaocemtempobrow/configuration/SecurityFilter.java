@@ -14,82 +14,54 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class SecurityFilter extends OncePerRequestFilter
-{
+public class SecurityFilter extends OncePerRequestFilter {
 
-    private final UsuarioRepository usuarioRepository;
     private final TokenService tokenService;
+    private final UsuarioRepository usuarioRepository;
 
-    public SecurityFilter(TokenService tokenService, UsuarioRepository UsuarioRepository)
-    {
 
+    public SecurityFilter(TokenService tokenService,
+                          UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService;
-        this.usuarioRepository = UsuarioRepository;
-
+        this.usuarioRepository = usuarioRepository;
     }
 
-    private String getToken(HttpServletRequest request) throws Exception
-    {
-
+    private String getToken(HttpServletRequest request)
+            throws Exception {
         var token = request.getHeader("Authorization");
-
-        if(token == null || token.isEmpty())
-        {
-
+        if(token == null || token.isEmpty()) {
             throw new Exception("Token não encontrado!");
-
         }
-        else
-        if(!token.startsWith("Bearer "))
-        {
-
+        else if(!token.startsWith("Bearer ")) {
             throw new Exception("Token inválido!");
-
         }
 
         return token.replace("Bearer ", "");
-
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException
-    {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
+            throws ServletException, IOException {
 
-        try
-        {
-
-            String path = request.getRequestURI();
-
-            if (path.equals("/auth/login")) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-
+        try {
             var token = this.getToken(request);
             var subject = tokenService.getSubjectByToken(token);
 
             Usuario user = usuarioRepository.findEntityByUsername(subject)
                     .orElseThrow(() -> new Exception("Usuário não encontrado"));
 
-            var authentication = new UsernamePasswordAuthenticationToken
-                    (user, null, user.getAuthorities());
+            var authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            user, null, user.getAuthorities());
 
             SecurityContextHolder
                     .getContext().setAuthentication(authentication);
-
-        }
-        catch (Exception e)
-        {
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Não autorizado: " + e.getMessage());
-            return; // para execução e não continua a cadeia
-
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
         filterChain.doFilter(request, response);
-
     }
-
 }
