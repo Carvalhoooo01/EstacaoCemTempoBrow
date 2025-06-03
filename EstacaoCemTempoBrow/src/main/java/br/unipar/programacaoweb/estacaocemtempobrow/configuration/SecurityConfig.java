@@ -47,7 +47,8 @@ public class SecurityConfig
                                 authorizeRequests ->
                                         authorizeRequests
                                                 .requestMatchers("auth/login").permitAll()
-                                                .anyRequest().permitAll()
+                                                .requestMatchers("estacao/listar").hasRole("USER")//Exemplo
+                                                .anyRequest().hasAnyAuthority("ADMIN")
 
                         )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
